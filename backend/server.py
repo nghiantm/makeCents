@@ -326,4 +326,4 @@ def get_cards_ranking():
         return {"error": str(e)}, 500  # Internal Server Error
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
