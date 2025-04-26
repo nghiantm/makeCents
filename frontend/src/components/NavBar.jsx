@@ -1,18 +1,22 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-
-const navigation = [
-  { name: 'My Wallet', href: '#', current: false },
-  { name: 'Pick My Card', href: '#', current: false },
-  { name: 'Recommendation', href: '#', current: false },
-  { name: 'All Cards', href: '#', current: true },
-]
+import { useLocation } from 'react-router-dom'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function NavBar() {
+    const location = useLocation();
+    const currentPath = location.pathname;
+
+    const navigation = [
+        { name: 'My Wallet', href: '/', current: currentPath === '/' },
+        { name: 'Pick My Card', href: '#', current: currentPath === '/pick' },
+        { name: 'Recommendation', href: '#', current: currentPath === '/recommendation' },
+        { name: 'All Cards', href: '/all', current: currentPath === '/all' },
+      ]
+
   return (
     <Disclosure as="nav" className="bg-gray-800 rounded-xl">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

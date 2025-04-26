@@ -5,6 +5,7 @@ import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Home from './routes/Home.jsx'
 import NavBar from './components/NavBar'
+import All from './routes/All.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,6 +15,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route  path='/' element={<Home />} />
+        <Route path='/all' element={<All />} />
       </Routes>
     </div>  
   )
