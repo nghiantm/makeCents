@@ -20,7 +20,7 @@ cur.execute('SELECT version()')
 print(cur.fetchone())
 
 # set constants
-categories = {cat: True for cat in ['travel', 'dining', 'grocery', 'gas', 'all']}
+categories = {cat: True for cat in ['travel', 'dining', 'grocery', 'gas', 'online', 'pharma', 'all']}
 redeem_methods = {method: True for method in ['cashback', 'travel', 'giftcard']}
 
 app = Flask(__name__)
@@ -154,6 +154,7 @@ def get_user_card_ranking():
                 c.card_type,
                 c.img_url,  -- Added img_url
                 c.perks,    -- Added perks
+                c.annual_fee,
                 COALESCE(
                     (SELECT {redeem_method}
                     FROM card_rewards cr
@@ -225,10 +226,11 @@ def get_user_card_ranking():
                 "card_type": row[2],
                 "img_url": row[3],  # Added img_url
                 "perks": row[4],     # Added perks
-                "reward_equiv": row[5],  # Assuming this corresponds to point_travel_equiv or similar
-                "cashback_pct": row[6],
-                "point_mul": row[7],
-                "rank": row[8],
+                "annual_fee": row[5],  # Added annual_fee
+                "reward_equiv": row[6],  # Assuming this corresponds to point_travel_equiv or similar
+                "cashback_pct": row[7],
+                "point_mul": row[8],
+                "rank": row[9],
             }
             for row in rows
         ]
@@ -260,6 +262,7 @@ def get_cards_ranking():
                 c.card_type,
                 c.img_url,  -- Added img_url column
                 c.perks,    -- Added perks column
+                c.annual_fee,
                 COALESCE(
                     (SELECT point_{redeem_method}_equiv
                     FROM card_rewards cr
@@ -320,10 +323,11 @@ def get_cards_ranking():
                 "card_type": row[2],
                 "img_url": row[3],  # Added img_url
                 "perks": row[4],     # Added perks
-                "reward_equiv": row[5],  # Assuming this corresponds to point_travel_equiv or similar
-                "cashback_pct": row[6],
-                "point_mul": row[7],
-                "rank": row[8],
+                "annual_fee": row[5],  # Added annual_fee
+                "reward_equiv": row[6],  # Assuming this corresponds to point_travel_equiv or similar
+                "cashback_pct": row[7],
+                "point_mul": row[8],
+                "rank": row[9],
             }
             for row in rows
         ]
