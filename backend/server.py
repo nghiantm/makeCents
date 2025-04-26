@@ -152,6 +152,8 @@ def get_user_card_ranking():
                 c.card_id,
                 c.card_name,
                 c.card_type,
+                c.img_url,  -- Added img_url
+                c.perks,    -- Added perks
                 COALESCE(
                     (SELECT {redeem_method}
                     FROM card_rewards cr
@@ -221,11 +223,12 @@ def get_user_card_ranking():
                 "card_id": row[0],
                 "card_name": row[1],
                 "card_type": row[2],
-                "reward_equiv": row[3],
-                "cashback_pct": row[4],
-                "point_mul": row[5],
-                "category": row[6],
-                "rank": row[7],
+                "img_url": row[3],  # Added img_url
+                "perks": row[4],     # Added perks
+                "reward_equiv": row[5],  # Assuming this corresponds to point_travel_equiv or similar
+                "cashback_pct": row[6],
+                "point_mul": row[7],
+                "rank": row[8],
             }
             for row in rows
         ]
@@ -251,61 +254,60 @@ def get_cards_ranking():
         # Succeptible to SQL injection
         cur.execute(
             f"""
-SELECT
-    c.card_id,
-    c.card_name,
-    c.card_type,
-    c.img_url,  -- Added img_url column
-    c.perks,    -- Added perks column
-    COALESCE(
-        (SELECT point_{redeem_method}_equiv
-         FROM card_rewards cr
-         WHERE cr.card_id = c.card_id AND cr.category = '{category}'
-         LIMIT 1),
-        (SELECT point_{redeem_method}_equiv
-         FROM card_rewards cr
-         WHERE cr.card_id = c.card_id AND cr.category = 'all'
-         LIMIT 1),
-        0) AS point_{redeem_method}_equiv,
-    COALESCE(
-        (SELECT cashback_pct
-         FROM card_rewards cr
-         WHERE cr.card_id = c.card_id AND cr.category = '{category}'
-         LIMIT 1),
-        (SELECT cashback_pct
-         FROM card_rewards cr
-         WHERE cr.card_id = c.card_id AND cr.category = 'all'
-         LIMIT 1),
-        0) AS cashback_pct,
-    COALESCE(
-        (SELECT point_mul
-         FROM card_rewards cr
-         WHERE cr.card_id = c.card_id AND cr.category = '{category}'
-         LIMIT 1),
-        (SELECT point_mul
-         FROM card_rewards cr
-         WHERE cr.card_id = c.card_id AND cr.category = 'all'
-         LIMIT 1),
-        0) AS point_mul,
-    RANK() OVER (ORDER BY
-        COALESCE(
-            (SELECT point_{redeem_method}_equiv
-             FROM card_rewards cr
-             WHERE cr.card_id = c.card_id AND cr.category = '{category}'
-             LIMIT 1),
-            (SELECT point_{redeem_method}_equiv
-             FROM card_rewards cr
-             WHERE cr.card_id = c.card_id AND cr.category = 'all'
-             LIMIT 1),
-            0
-        ) DESC,
-        LENGTH(c.perks::text) DESC  -- Tiebreaker: Larger 'perks' size ranks higher
-    ) AS rank
-FROM
-    cards c
-ORDER BY
-    point_{redeem_method}_equiv DESC, LENGTH(c.perks::text) DESC;  -- Order by points and perks size for tiebreaker
-
+            SELECT
+                c.card_id,
+                c.card_name,
+                c.card_type,
+                c.img_url,  -- Added img_url column
+                c.perks,    -- Added perks column
+                COALESCE(
+                    (SELECT point_{redeem_method}_equiv
+                    FROM card_rewards cr
+                    WHERE cr.card_id = c.card_id AND cr.category = '{category}'
+                    LIMIT 1),
+                    (SELECT point_{redeem_method}_equiv
+                    FROM card_rewards cr
+                    WHERE cr.card_id = c.card_id AND cr.category = 'all'
+                    LIMIT 1),
+                    0) AS point_{redeem_method}_equiv,
+                COALESCE(
+                    (SELECT cashback_pct
+                    FROM card_rewards cr
+                    WHERE cr.card_id = c.card_id AND cr.category = '{category}'
+                    LIMIT 1),
+                    (SELECT cashback_pct
+                    FROM card_rewards cr
+                    WHERE cr.card_id = c.card_id AND cr.category = 'all'
+                    LIMIT 1),
+                    0) AS cashback_pct,
+                COALESCE(
+                    (SELECT point_mul
+                    FROM card_rewards cr
+                    WHERE cr.card_id = c.card_id AND cr.category = '{category}'
+                    LIMIT 1),
+                    (SELECT point_mul
+                    FROM card_rewards cr
+                    WHERE cr.card_id = c.card_id AND cr.category = 'all'
+                    LIMIT 1),
+                    0) AS point_mul,
+                RANK() OVER (ORDER BY
+                    COALESCE(
+                        (SELECT point_{redeem_method}_equiv
+                        FROM card_rewards cr
+                        WHERE cr.card_id = c.card_id AND cr.category = '{category}'
+                        LIMIT 1),
+                        (SELECT point_{redeem_method}_equiv
+                        FROM card_rewards cr
+                        WHERE cr.card_id = c.card_id AND cr.category = 'all'
+                        LIMIT 1),
+                        0
+                    ) DESC,
+                    LENGTH(c.perks::text) DESC  -- Tiebreaker: Larger 'perks' size ranks higher
+                ) AS rank
+            FROM
+                cards c
+            ORDER BY
+                point_{redeem_method}_equiv DESC, LENGTH(c.perks::text) DESC;  -- Order by points and perks size for tiebreaker
             """
         )
         rows = cur.fetchall()  # Fetch all rows from the result
