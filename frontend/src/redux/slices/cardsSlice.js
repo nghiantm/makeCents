@@ -29,11 +29,11 @@ const cardsSlice = createSlice({
             })
             .addCase(fetchAllCards.fulfilled, (state, action) => {
                 state.loading = false;
-                state.cards = action.payload;
+                state.cards = action.payload.data;
             })
             .addCase(fetchAllCards.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = action.payload.data;
             });
     },
 });
