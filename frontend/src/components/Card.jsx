@@ -6,7 +6,7 @@ const Card = ({ card }) => {
             {/* Card Image */}
             {card.img_url && (
                 <img
-                    src={card.image_url}
+                    src={card.img_url}
                     alt={card.card_name}
                     className="w-full h-40 object-cover rounded-t-lg mb-4"
                 />
