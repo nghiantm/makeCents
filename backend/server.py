@@ -15,9 +15,6 @@ conn = psycopg2.connect(
     password=os.getenv("DB_PASSWORD"),
     port=os.getenv("DB_PORT"),
 )
-cur = conn.cursor()
-cur.execute('SELECT version()')
-print(cur.fetchone())
 
 # set constants
 categories = {cat: True for cat in ['travel', 'dining', 'grocery', 'gas', 'online', 'pharma', 'all']}
@@ -29,15 +26,33 @@ app = Flask(__name__)
 def hello_world():
     return "<p>ping</p>"
 
-@app.route('/api/card-img', methods=['GET'])
-def get_card_img():
+@app.route('/api/card', methods=['GET'])
+def get_cards_for_selection():
     try:
+        # Create a new cursor for this request
+        cur = conn.cursor()
+
         # Execute SQL query to fetch card_id and img_url from cards table
-        cur.execute("SELECT card_id, img_url FROM cards")
+        cur.execute(
+            """
+            SELECT 
+                card_id,
+                card_name,
+                img_url
+            FROM 
+                cards
+            ORDER BY 
+                card_name ASC;
+        """
+        )
         rows = cur.fetchall()  # Fetch all rows from the result
 
         # Format the result as JSON
-        data = [{"card_id": row[0], "img_url": row[1]} for row in rows]
+        data = [{"id": row[0], "name": row[1], "img_url": row[2]} for row in rows]
+
+        # Close the cursor
+        cur.close()  # Close the cursor after use
+
         return {"data": data}, 200  # Return JSON response with HTTP 200 status
     except Exception as e:
         return {"error": str(e)}, 500  # Return error message with HTTP 500 status
@@ -45,6 +60,9 @@ def get_card_img():
 @app.route('/api/user/card', methods=['GET'])
 def get_user_cards():
     try:
+        # Create a new cursor for this request
+        cur = conn.cursor()
+
         # Get the user_id from query parameters
         user_id = request.args.get('user_id')
 
@@ -74,6 +92,9 @@ def get_user_cards():
             for row in rows
         ]
 
+        # Close the cursor
+        cur.close()  # Close the cursor after use
+
         return {"data": data}, 200  # Return JSON response with HTTP 200 status
     except Exception as e:
         return {"error": str(e)}, 500  # Internal Server Error
@@ -81,6 +102,9 @@ def get_user_cards():
 @app.route('/api/user/card', methods=['POST'])
 def add_user_card():
     try:
+        # Create a new cursor for this request
+        cur = conn.cursor()
+
         # Parse JSON payload from the request
         data = request.get_json()
         user_id = data.get('user_id')
@@ -100,6 +124,9 @@ def add_user_card():
         )
         conn.commit()  # Commit the transaction
 
+        # Close the cursor
+        cur.close()  # Close the cursor after use
+
         return {"message": "User card added successfully"}, 201  # Created
     except Exception as e:
         conn.rollback()  # Rollback the transaction in case of error
@@ -108,6 +135,9 @@ def add_user_card():
 @app.route('/api/user/card', methods=['DELETE'])
 def delete_user_card():
     try:
+        # Create a new cursor for this request
+        cur = conn.cursor()
+
         # Parse JSON payload from the request
         data = request.get_json()
         user_id = data.get('user_id')
@@ -124,6 +154,9 @@ def delete_user_card():
         )
         conn.commit()  # Commit the transaction
 
+        # Close the cursor
+        cur.close()  # Close the cursor after use
+
         return {"message": "User card deleted successfully"}, 200  # OK
     except Exception as e:
         conn.rollback()
@@ -132,6 +165,8 @@ def delete_user_card():
 @app.route('/api/user/card/ranking', methods=['GET'])
 def get_user_card_ranking():
     try:
+        cur = conn.cursor()  # Create a new cursor for this request
+
         category = request.args.get('category')
         user_id = request.args.get('user_id')
         redeem_method = request.args.get('redeem_method')
@@ -218,6 +253,7 @@ def get_user_card_ranking():
         )
         rows = cur.fetchall()  # Fetch all rows from the result
 
+
         # Format the result as JSON
         data = [
             {
@@ -235,6 +271,9 @@ def get_user_card_ranking():
             for row in rows
         ]
 
+        # Close the cursor
+        cur.close()  # Close the cursor after use
+
         return {"data": data}, 200  # Return JSON response with HTTP 200 status
     except Exception as e:
         return {"error": str(e)}, 500  # Internal Server Error
@@ -242,6 +281,8 @@ def get_user_card_ranking():
 @app.route('/api/card/ranking', methods=['GET'])
 def get_cards_ranking():
     try:
+        cur = conn.cursor()  # Create a new cursor for this request
+
         category = request.args.get('category')
         redeem_method = request.args.get('redeem_method')
 
@@ -331,6 +372,9 @@ def get_cards_ranking():
             }
             for row in rows
         ]
+
+        # Close the cursor
+        cur.close()  # Close the cursor after use
 
         return {"data": data}, 200  # Return JSON response with HTTP 200 status
     except Exception as e:
