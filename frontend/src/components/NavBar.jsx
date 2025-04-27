@@ -13,7 +13,7 @@ export default function NavBar() {
     const navigation = [
         { name: 'My Wallet', href: '/', current: currentPath === '/' },
         { name: 'Pick My Card', href: '/user-ranking', current: currentPath === '/user-ranking' },
-        { name: 'Recommendation', href: '#', current: currentPath === '/recommendation' },
+        { name: 'Recommendation', href: '/#', current: currentPath === '/recommendation' },
         { name: 'All Cards', href: '/all', current: currentPath === '/all' },
       ]
 

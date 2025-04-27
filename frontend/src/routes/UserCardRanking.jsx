@@ -4,6 +4,7 @@ import { fetchUserCardsRanking } from '../redux/slices/cardsSlice';
 import Card from '../components/Card';
 import Select from '../components/Select';
 import UserCard from '../components/UserCard';
+import RecCard from '../components/RecCard';
 
 const methods = [
     {
@@ -51,6 +52,7 @@ const categories = [
     }
 ]
 
+
 const UserCardRanking = () => {
     const dispatch = useDispatch();
     const { cards, loading, error } = useSelector((state) => state.cards);
@@ -64,7 +66,11 @@ const UserCardRanking = () => {
     }, [dispatch, redeemMethod, category]);
 
     return (
+        
         <div className=" w-screen p-4">
+            {/* Pricing */}
+            <RecCard></RecCard>
+            {/* Pricing end */}
             <h1 className="question-heading mb-8">
                 Which <br /> card should I <br /> use?
             </h1>
