@@ -1,0 +1,145 @@
+.card-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    /* color: #2d1471; */
+    font: Poppins;
+    margin-bottom: 0.75rem;
+}
+
+.info-pill {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 1rem; /* Softer corners but still boxy */
+    width: 100px; /* fixed width */
+    height: 100px; /* fixed height */
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.25);
+  }
+  .info-pill-title {
+    background: linear-gradient(90deg, #0a0b29 0%, #25259f 25%, #c451b1 50%, #b018c4 75%, #eb643b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+
+.gradient-text {
+    background: linear-gradient(90deg, #0a0b29 0%, #25259f 25%, #c451b1 50%, #b018c4 75%, #eb643b 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+.card-text {
+    font-size: 0.95rem;
+    color: black;
+    margin-bottom: 0.4rem;
+  }
+  
+  .card-reward-green {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #00a42e; /* Tailwind green-300 */
+    margin-bottom: 1rem;
+  }
+  
+  .card-reward-blue {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0054fb; /* Tailwind blue-300 */
+    margin-bottom: 1rem;
+  }
+/* Perks Section */
+/* .card-perks {
+    margin-top: 1rem;
+  } */
+/*   
+  .card-perks-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  } */
+/*   
+  .card-perks-list p {
+    margin-bottom: 0.4rem;
+  } */
+  
+  /* Special Perk Key Styling */
+  .card-perk-key {
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    /* color: #ffffff; */
+  }
+
+  /* Card Perks Glass Container */
+.card-perks {
+    /* background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    margin-right: 2rem;
+    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.25); */
+    text-align: left; /* Force all text left */
+    /* width: 90%; */
+    margin-left:1rem;
+    margin-right:1rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  /* Perks Title */
+  .card-perks-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    /* color: white; */
+    color: rgb(51, 39, 114);
+    margin-bottom: 1rem;
+    text-align: left; /* Title aligned left too */
+    
+    font-family: 'Inter', sans-serif;
+  }
+  
+  /* Perks List (no bullets) */
+  .card-perks-list {
+    font-size: 0.75rem;
+    /* font-size: 0.85rem; */
+    font-weight: 400;
+    color: #9ca3af; /* Soft gray text */
+    padding-left: 0;
+    margin: 0;
+    list-style: none; /* Remove bullets */
+    font-family: 'Poppins', sans-serif; /* Use Poppins */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* Each perk line */
+  .card-perks-list li {
+    /* margin-bottom: 0.3rem;
+    line-height: 1.4; */
+    font-family: 'Inter', sans-serif;
+
+        margin-bottom: 0.25rem; /* (optional) smaller bottom margin between items */
+        line-height: 1.2; /* tighter line height */
+    
+  }
+  
+  /* Bold Perk Key */
+  .card-perks-list li span {
+    font-weight: 600;
+    color: black;
+    font-family: 'Inter', sans-serif;
+  }
+  

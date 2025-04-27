@@ -11,12 +11,15 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div className='h-screen w-screen p-4'>
+    <div className=' w-screen p-4 app-background'>
+      
+      <div class ='main-glass-container min-h-screen'>
       <NavBar />
       <Routes>
         <Route  path='/' element={<Home />} />
         <Route path='/all' element={<All />} />
       </Routes>
+      </div>
     </div>  
   )
 }

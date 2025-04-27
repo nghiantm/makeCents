@@ -13,7 +13,7 @@ const All = () => {
     }, [dispatch]);
 
     return loading ? (<p>Loading</p>) : (
-        <div className="h-screen w-screen p-4">
+        <div className="w-screen p-4">
             <h1 className="text-3xl font-bold mb-4">All Cards</h1>
             {loading && <p>Loading cards...</p>}
             {error && <p className="text-red-500">Error: {error}</p>}
