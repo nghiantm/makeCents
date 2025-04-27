@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UserCard = ({ card }) => {
+const UserCard = ({ card, handleDelete }) => {
     return (
         <div className="border rounded-lg shadow-md p-4 m-2 w-full max-w-sm">
             {/* Card Image */}
@@ -19,16 +19,22 @@ const UserCard = ({ card }) => {
             <p className="text-sm text-gray-600">
                 Reward Equivalent: {card.reward_equiv}
             </p>
-            {card.card_type === 'cashback' && (
-                <p className="text-sm text-green-600">
-                    Cashback: {card.cashback_pct}%
-                </p>
-            )}
-            {card.card_type === 'point' && (
-                <p className="text-sm text-blue-600">
-                    Point Multiplier: {card.point_mul}x
-                </p>
-            )}
+            
+            <p className="text-sm text-blue-600">
+                Point Multiplier: {card.date_added}
+            </p>
+            
+
+            <div className="border p-4 rounded shadow-md m-2">
+                <h2 className="text-lg font-bold">{card.name}</h2>
+                <p>{card.description}</p>
+                <button
+                    onClick={() => handleDelete(card.card_id)}
+                    className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                >
+                    Delete
+                </button>
+            </div>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllCards, getCardsForSelection, getUserCardsRanking } from '../../api/apiClient';
+import { getAllCards, getCardsForSelection, getUserCardsRanking, addUserCard, deleteUserCard, getUserCards } from '../../api/apiClient';
 
 // Thunk for fetching all cards
 export const fetchAllCards = createAsyncThunk(
@@ -40,10 +40,47 @@ export const fetchCardsForSelection = createAsyncThunk(
     }
 );
 
+export const deleteUserCardThunk = createAsyncThunk(
+    'cards/deleteUserCardThunk',
+    async ({ user_id, card_id }, thunkAPI) => {
+        try {
+            await deleteUserCard(user_id, card_id); // Call the API function
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message); // Handle errors
+        }
+    }
+);
+
+// Thunk for adding a user card
+export const addUserCardThunk = createAsyncThunk(
+    'cards/addUserCardThunk',
+    async ({ user_id, card_id }, thunkAPI) => {
+        try {
+            console.log("REDUCT: Adding card with ID:", card_id);
+            await addUserCard(user_id, card_id);
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
+
+export const fetchUserCards = createAsyncThunk(
+    'cards/fetchUserCards',
+    async ({user_id}, thunkAPI) => {
+        try {
+            const data = await getUserCards(user_id); // Call the API function
+            return data; // Return the fetched cards
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message); // Handle errors
+        }
+    }
+);
+
 const cardsSlice = createSlice({
     name: 'cards',
     initialState: {
         cards: [],
+        userCards: [], // Add a new state for user cards
         selectionCards: [], // Add a new state for cards used in selection
         loading: false,
         error: null,
@@ -91,8 +128,52 @@ const cardsSlice = createSlice({
             .addCase(fetchCardsForSelection.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+
+            // Handle addUserCardThunk
+            .addCase(addUserCardThunk.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addUserCardThunk.fulfilled, (state) => {
+                state.loading = false;
+                // Optionally update state if needed
+            })
+            .addCase(addUserCardThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // Handle deleteUserCardThunk
+            .addCase(deleteUserCardThunk.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteUserCardThunk.fulfilled, (state, action) => {
+                state.loading = false;
+                // Remove the deleted card from the `cards` array
+                //state.cards = state.cards.filter((card) => card.card_id !== action.payload);
+            })
+            .addCase(deleteUserCardThunk.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload; // Store the error message
+            })
+
+            // Handle fetchUserCards
+            .addCase(fetchUserCards.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUserCards.fulfilled, (state, action) => {
+                state.loading = false;
+                state.userCards = action.payload.data; // Update the cards state with the fetched data
+            })
+            .addCase(fetchUserCards.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload; // Store the error message
             });
     },
 });
+
 
 export default cardsSlice.reducer;

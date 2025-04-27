@@ -8,12 +8,10 @@ import UserCardRanking from './routes/UserCardRanking.jsx'
 import Wallet from './routes/Wallet.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div className=' w-screen p-4 app-background'>
       
-      <div class ='main-glass-container min-h-screen'>
+      <div className='main-glass-container min-h-screen'>
       <NavBar />
       <Routes>
         <Route  path='/' element={<Wallet />} />
