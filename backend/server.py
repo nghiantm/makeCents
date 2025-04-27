@@ -106,7 +106,7 @@ def get_user_cards():
                 "card_type": row[2],
                 "img_url": row[3],
                 "annual_fee": row[4],  # Added annual_fee
-                "date_added": row[5].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None  # Include timestamp
+                "date_added": row[5].strftime('%Y-%m-%d %H:%M:%S') if row[5] else None  # Include timestamp
             }
             for row in rows
         ]
@@ -151,8 +151,7 @@ def add_user_card():
 @app.route('/api/user/card', methods=['DELETE'])
 def delete_user_card():
     try:
-        cur = conn.cursor()  # Create a new cursor for this request
-
+        cur = conn.cursor() 
         # Parse JSON payload from the request
         data = request.get_json()
         user_id = data.get('user_id')
@@ -284,7 +283,7 @@ def get_user_card_ranking():
             }
             for row in rows
         ]
-
+        cur.close()
         return {"data": data}, 200  # Return JSON response with HTTP 200 status
     except Exception as e:
         return {"error": str(e)}, 500  # Internal Server Error

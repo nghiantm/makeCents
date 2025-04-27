@@ -1,12 +1,13 @@
 import React from 'react';
 import './Card.css';
+import CardPerks from './CardPerks';
 
 function formatKey(key) {
     return key
       .replace(/_/g, ' ')           // Replace underscores with spaces
       .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of every word
   }
-const Card = ({ card }) => {
+const Card = ({ card, showPerks = true  }) => {
     return (
         <div className="flex flex-col bg-white/10 backdrop-blur-md rounded-2xl shadow-lg overflow-hidden m-4 w-full max-w-4xl p-6">
           
@@ -15,7 +16,7 @@ const Card = ({ card }) => {
             
             {/* Left: Card Image */}
             {card.img_url && (
-              <div className="flex-shrink-0 w-[300px] h-[189px] mr-6">
+              <div className="flex-shrink-0 w-[300px] h-[189px] mr-6 ">
                 <img
                   src={card.img_url}
                   alt={card.card_name}
@@ -59,7 +60,8 @@ const Card = ({ card }) => {
           </div>
 
           {/* Bottom Row: Perks */}
-          {card.perks && Object.keys(card.perks).length > 0 && (
+          {showPerks && <div className="mt-10"><CardPerks perks={card.perks} /></div>}
+          {/* {card.perks && Object.keys(card.perks).length > 0 && (
             <div className="card-perks mt-6">
               <h3 className="text-base font-semibold card-perks-title mb-2">Perks:</h3>
               <ul className="list-disc list-inside space-y-1 text-sm card-perks-list">
@@ -70,7 +72,7 @@ const Card = ({ card }) => {
                 ))}
               </ul>
             </div>
-          )}
+          )} */}
 
         </div>
     );

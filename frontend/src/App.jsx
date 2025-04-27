@@ -6,6 +6,7 @@ import NavBar from './components/NavBar'
 import All from './routes/All.jsx'
 import UserCardRanking from './routes/UserCardRanking.jsx'
 import Wallet from './routes/Wallet.jsx'
+import Recommend from './routes/Recommend.jsx'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route  path='/' element={<Wallet />} />
         <Route path='/all' element={<All />} />
         <Route path='/user-ranking' element={<UserCardRanking />} />
+        <Route path='/recommend' element={<Recommend />} />
       </Routes>
       </div>
     </div>  

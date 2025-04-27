@@ -10,9 +10,11 @@ export default function Select({ methods, selected, setSelected, label }) {
     <Listbox value={selected} onChange={setSelected}>
       <div>
       <Label className="block text-sm/6 font-medium">{label}</Label>
-      <div className="relative mt-2 bg-white">
-        <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-1.5 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-          <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
+      <div className="relative mt-2 bg-transparent">
+        {/* <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-1.5 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"> */}
+        <ListboxButton className="box-shadowing grid w-full cursor-pointer grid-cols-1 rounded-xl backdrop-blur-lg py-2 pr-10 pl-3 text-left outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm">
+
+          <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6 ">
             {selected?.img_url && (
                   <img
                     alt=""
@@ -46,7 +48,7 @@ export default function Select({ methods, selected, setSelected, label }) {
                     <img
                       alt=""
                       src={person.img_url}
-                      className="size-10 shrink-0"
+                      className="size-10 shrink-0 "
                     />
                   )}
                 <span className="ml-3 block truncate font-normal group-data-selected:font-semibold">{person.name}</span>

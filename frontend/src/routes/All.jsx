@@ -14,7 +14,7 @@ const All = () => {
 
     return loading ? (<p>Loading</p>) : (
         <div className="w-screen p-4">
-            <h1 className="text-3xl font-bold mb-4">All Cards</h1>
+            <h1 className="text-3xl font-bold mb-4 question-heading">Explore<br />  All Cards <br /></h1>
             {loading && <p>Loading cards...</p>}
             {error && <p className="text-red-500">Error: {error}</p>}
             <div className="flex flex-wrap justify-center">
