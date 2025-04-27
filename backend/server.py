@@ -88,7 +88,7 @@ def get_user_cards():
         # Execute SQL query to fetch all cards for the given user_id, including date_added
         cur.execute(
             """
-            SELECT uc.card_id, c.card_name, c.card_type, c.img_url, uc.date_added
+            SELECT uc.card_id, c.card_name, c.card_type, c.img_url, c.annual_fee, uc.date_added
             FROM user_cards uc
             JOIN cards c ON uc.card_id = c.card_id
             WHERE uc.user_id = %s
@@ -105,7 +105,8 @@ def get_user_cards():
                 "card_name": row[1],
                 "card_type": row[2],
                 "img_url": row[3],
-                "date_added": row[4].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None  # Include timestamp
+                "annual_fee": row[4],  # Added annual_fee
+                "date_added": row[5].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None  # Include timestamp
             }
             for row in rows
         ]
@@ -150,6 +151,8 @@ def add_user_card():
 @app.route('/api/user/card', methods=['DELETE'])
 def delete_user_card():
     try:
+        cur = conn.cursor()  # Create a new cursor for this request
+
         # Parse JSON payload from the request
         data = request.get_json()
         user_id = data.get('user_id')
@@ -165,6 +168,8 @@ def delete_user_card():
             (user_id, card_id)
         )
         conn.commit()  # Commit the transaction
+        
+        cur.close()  # Close the cursor after use
 
         return {"message": "User card deleted successfully"}, 200  # OK
     except Exception as e:
@@ -577,6 +582,8 @@ ORDER BY
 
         result = __sumUpCategory()
 
+        
+
         redeem_method = request.args.get('redeem_method')
         if redeem_method not in redeem_methods:
             return {"error": "Invalid redeem_method"}, 400
@@ -596,6 +603,10 @@ ORDER BY
             key=lambda c: c['net_savings'],
             reverse=True
         )[:3]
+
+        #Add ranking numbers to the top3 cards
+        for rank, card in enumerate(top3, start=1):
+            card['rank'] = rank
 
         return {"data": top3}, 200  # Return JSON response with HTTP 200 status
     except Exception as e:
