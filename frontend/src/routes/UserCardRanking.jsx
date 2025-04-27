@@ -61,32 +61,58 @@ const UserCardRanking = () => {
     useEffect(() => {
         console.log('Fetching user cards ranking...');
         dispatch(fetchUserCardsRanking({ user_id: 'test@test.com', category: category.id, redeem_method: redeemMethod.id }));
-    }, [dispatch, redeemMethod]);
+    }, [dispatch, redeemMethod, category]);
 
     return (
-        <div className="h-screen w-screen p-4">
-            <h1 className="text-3xl font-bold mb-4">Which card should you use?</h1>
+        <div className=" w-screen p-4">
+            <h1 className="question-heading mb-8">
+                Which <br /> card should I <br /> use?
+            </h1>
+            <p className='regular-text'>find out the best option from your wallet</p>
 
             {/* Select Component */}
-            <div className="grid grid-cols-5 mb-6 gap-4">
-                <Select methods={categories} selected={category} setSelected={setCategory} label={"Category"}/>
-                <Select methods={methods} selected={redeemMethod} setSelected={setRedeemMethod} label={"Redeem Method"}/>
+            <div className="box-input flex flex-wrap gap-6 mb-10 w-64">
+                {/* Category Dropdown */}
+                <div className="glass-select flex flex-col  w-[15rem]">
+                    <label className="select-label mb-2 ">Category</label>
+                    <Select methods={categories} selected={category} setSelected={setCategory} />
+                </div>
+
+                {/* Redeem Method Dropdown */}
+                <div className="glass-select flex flex-col  w-[15rem]">
+                    <label className="select-label mb-2">Redeem Method</label>
+                    <Select methods={methods} selected={redeemMethod} setSelected={setRedeemMethod} />
+                </div>
+                {/* <Select methods={categories} selected={category} setSelected={setCategory} label={"Category"} />
+                <Select methods={methods} selected={redeemMethod} setSelected={setRedeemMethod} label={"Redeem Method"} /> */}
             </div>
 
             {/* Loading and Error States */}
-            {loading && <p>Loading cards...</p>}
-            {error && <p className="text-red-500">Error: {error}</p>}
-
-            {/* Cards Display */}
             {!loading && cards.length > 0 ? (
-                <div className="flex flex-wrap justify-center">
-                    {cards.map((card) => (
-                        <Card key={card.card_id} card={card} />
-                    ))}
+                <div className="flex flex-col items-center">
+
+                    {/* Top Best Card */}
+                    <div className="mb-12 w-full max-w-4xl">
+                        <h2 className="text-xl font-bold mb-10 text-center announcement-text">✨ This is the your best card for this category!</h2>
+                        <Card card={cards[0]} featured />  {/* Pass a "featured" prop to Card */}
+                    </div>
+
+                    {/* Divider Line + Message */}
+                    <div className="border-t border-gray-400 w-full max-w-5xl mb-8"></div>
+                    <h3 className="text-lg font-semibold mb-6 text-center announcement-text">Other options in order:</h3>
+
+                    {/* Rest of Cards */}
+                    <div className="flex flex-wrap justify-center gap-6">
+                        {cards.slice(1).map((card) => (
+                            <Card key={card.card_id} card={card} showPerks={false} />
+                        ))}
+                    </div>
+
                 </div>
             ) : (
                 !loading && <p className="text-gray-500">No cards available to display.</p>
             )}
+
         </div>
     );
 };

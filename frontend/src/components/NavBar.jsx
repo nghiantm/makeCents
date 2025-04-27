@@ -32,7 +32,7 @@ export default function NavBar() {
           </div>
           <div className="flex shrink-0 items-center">
             
-            <h1 className="text-3xl font-bold tracking-tight">MakeCents</h1>
+            <h1 className="text-3xl font-bold tracking-tight logo-heading">MakeCents</h1>
               {/* <h1 className=" w-auto">MakeCents</h1> */}
               {/* <img
                 alt="Your Company"
@@ -51,8 +51,10 @@ export default function NavBar() {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      item.current ? 'bg-transparent text-white' : 'text-gray-300 hover:bg-transparent hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-medium',
+                      item.current
+                        ? 'border-b-2 border-[#646cff] font-bold text-black'
+                        : 'text-gray-400',
+                      'px-3 py-2 text-sm font-medium transition-all duration-300'
                     )}
                   >
                     {item.name}

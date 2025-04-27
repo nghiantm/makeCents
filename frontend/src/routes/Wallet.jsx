@@ -41,20 +41,23 @@ const Wallet = () => {
 
     return (
         <div className="min-h-screen w-screen p-4">
-            <h1 className="text-3xl font-bold mb-4 mt-8">Add card</h1>
-
+            <h1 className="text-3xl font-bold mb-4 mt-8 question-heading">Manage <br/> My Wallet <br/> </h1>
+            <p className='regular-text'>Easily add or remove any card within a second </p>
+            <div className ="flex justify-center">
+            <div className = "glass-select w-[22rem] ">
+                
             {!loading && selectionCards.length > 0 ? (
-            <div>
+            <div className = "w-80">
                 <Select 
                     methods={selectionCards} 
                     selected={cardId} 
                     setSelected={setCardId} 
-                    label={"Choose new card"}
+                    label={"Choose a card below to add"}
                 />
                 <button
                     onClick={handleCardAdd}
                     disabled={!cardId || loading}
-                    className={`mt-4 px-4 py-2 rounded ${
+                    className={`mt-4 px-4 py-2 rounded button-submit  ${
                         cardId ? "bg-blue-500 text-white hover:bg-blue-600" : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     }`} 
                 >
@@ -64,8 +67,9 @@ const Wallet = () => {
             ) : (
                 !loading && <p className="text-gray-500">No userCards available to display.</p>
             )}
-
-            <h1 className="text-3xl font-bold mb-4">Your cards</h1>
+            </div>
+            </div>
+            <h1 className="text-3xl font-bold pb-5 pt-10 question-heading">What's <br/> inside my wallet?</h1>
 
             {/* Loading and Error States */}
             {loading && <p>Loading userCards...</p>}
@@ -73,7 +77,7 @@ const Wallet = () => {
 
             {/* Cards Display */}
             {!loading && userCards.length > 0 ? (
-                <div className="flex flex-wrap justify-center">
+                <div className="flex flex-wrap justify-center user-card-display flex flex-col items-center gap-20">
                     {userCards.map((card) => (
                         <UserCard key={card.card_id} card={card} handleDelete={handleDelete}/>
                     ))}
