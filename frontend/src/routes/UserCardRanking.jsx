@@ -68,9 +68,6 @@ const UserCardRanking = () => {
     return (
         
         <div className=" w-screen p-4">
-            {/* Pricing */}
-            <RecCard></RecCard>
-            {/* Pricing end */}
             <h1 className="question-heading mb-8">
                 Which <br /> card should I <br /> use?
             </h1>
