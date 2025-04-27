@@ -89,3 +89,18 @@ export const deleteUserCard = async (user_id, card_id) => {
         throw error;
     });
 }
+
+export const getCardRecommendation = async (redeem_method) => {
+    return myAxios.get('/card/recommend', {
+        params: {
+            redeem_method: redeem_method
+        }
+    })
+    .then((response) => {
+        return response.data;
+    })
+    .catch((error) => {
+        console.error("Error fetching card recommendation:", error);
+        throw error;
+    });
+}

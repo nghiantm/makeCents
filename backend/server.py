@@ -106,7 +106,7 @@ def get_user_cards():
                 "card_type": row[2],
                 "img_url": row[3],
                 "annual_fee": row[4],  # Added annual_fee
-                "date_added": row[5].strftime('%Y-%m-%d %H:%M:%S') if row[4] else None  # Include timestamp
+                "date_added": row[5].strftime('%Y-%m-%d %H:%M:%S') if row[5] else None  # Include timestamp
             }
             for row in rows
         ]

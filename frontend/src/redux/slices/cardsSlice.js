@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllCards, getCardsForSelection, getUserCardsRanking, addUserCard, deleteUserCard, getUserCards } from '../../api/apiClient';
+import { getAllCards, getCardsForSelection, getUserCardsRanking, addUserCard, deleteUserCard, getUserCards, getCardRecommendation } from '../../api/apiClient';
 
 // Thunk for fetching all cards
 export const fetchAllCards = createAsyncThunk(
@@ -76,12 +76,25 @@ export const fetchUserCards = createAsyncThunk(
     }
 );
 
+export const fetchRecommendationCards = createAsyncThunk(
+    'cards/fetchRecommendationCards',
+    async ({ redeem_method }, thunkAPI) => {
+        try {
+            const data = await getCardRecommendation(redeem_method);
+            return data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
+
 const cardsSlice = createSlice({
     name: 'cards',
     initialState: {
         cards: [],
         userCards: [], // Add a new state for user cards
         selectionCards: [], // Add a new state for cards used in selection
+        recommendCards: [], // Add a new state for recommended cards
         loading: false,
         error: null,
     },
@@ -171,6 +184,20 @@ const cardsSlice = createSlice({
             .addCase(fetchUserCards.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload; // Store the error message
+            })
+
+            // Handle fetchRecommendationCards
+            .addCase(fetchRecommendationCards.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchRecommendationCards.fulfilled, (state, action) => {
+                state.loading = false;
+                state.recommendCards = action.payload.data;
+            })
+            .addCase(fetchRecommendationCards.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });

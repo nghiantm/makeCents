@@ -51,7 +51,7 @@ const UserCard = ({ card, handleDelete }) => {
                 <div className="info-pill">
                   <div className="info-pill-title">Annual Fee</div>
                   <div className="info-pill-value">
-                    {card.annual_fee ? `$${card.annual_fee}` : "N/A"}
+                    {card.annual_fee >= 0 ? `$${card.annual_fee}` : "N/A"}
                   </div>
                 </div>
 {/* 
