@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const myAxios = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: 'https://dgpjdzqtmk.execute-api.us-east-1.amazonaws.com/test',
 })
